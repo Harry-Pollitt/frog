@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://cjlfp7qvelqm7"]
+
+[ext_resource type="Texture2D" uid="uid://djhmkg61emgqv" path="res://assets/tongue-tail.png" id="1_i5m0w"]
+[ext_resource type="Script" uid="uid://c573n7fsqyvjx" path="res://scenes/tongue_body.gd" id="2_vkwpt"]
+
+[node name="TongueBody" type="Sprite2D"]
+texture_filter = 1
+texture_repeat = 2
+rotation = -1.5708
+scale = Vector2(2, 2)
+texture = ExtResource("1_i5m0w")
+region_enabled = true
+region_rect = Rect2(7, 7, 2, 2)
+script = ExtResource("2_vkwpt")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(0, 75)
+
+[connection signal="caught" from="." to="." method="_on_caught"]

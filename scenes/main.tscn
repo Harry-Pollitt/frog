@@ -1,0 +1,82 @@
+[gd_scene load_steps=12 format=3 uid="uid://bhm036y48wb0r"]
+
+[ext_resource type="Texture2D" uid="uid://dc7firvjc1fi5" path="res://assets/froggy-green.png" id="1_0xm2m"]
+[ext_resource type="Script" uid="uid://3g6ruh7ysnqg" path="res://scenes/tongue_origin.gd" id="1_jyhfs"]
+[ext_resource type="PackedScene" uid="uid://cjlfp7qvelqm7" path="res://scenes/tongue_body.tscn" id="2_sugp2"]
+[ext_resource type="Script" uid="uid://drfpd6m0snt6n" path="res://scenes/consume.gd" id="3_tbgi4"]
+[ext_resource type="Script" uid="uid://bpr58yirrkkod" path="res://scenes/spawner.gd" id="5_tbgi4"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jyhfs"]
+radius = 9.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1bvp3"]
+atlas = ExtResource("1_0xm2m")
+region = Rect2(0, 128, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lquwl"]
+atlas = ExtResource("1_0xm2m")
+region = Rect2(16, 128, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7mycd"]
+atlas = ExtResource("1_0xm2m")
+region = Rect2(32, 128, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_272bh"]
+atlas = ExtResource("1_0xm2m")
+region = Rect2(48, 128, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5vw27"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1bvp3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lquwl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7mycd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_272bh")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="Main" type="Node2D"]
+
+[node name="TongueOrigin" type="Node2D" parent="."]
+position = Vector2(170, 166)
+script = ExtResource("1_jyhfs")
+
+[node name="TongueBody" parent="TongueOrigin" instance=ExtResource("2_sugp2")]
+
+[node name="Consume" type="Area2D" parent="TongueOrigin"]
+script = ExtResource("3_tbgi4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TongueOrigin/Consume"]
+position = Vector2(0, 5)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_jyhfs")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(170, 164)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_5vw27")
+animation = &"idle"
+frame_progress = 0.750037
+
+[node name="Spawner" type="Node2D" parent="."]
+script = ExtResource("5_tbgi4")
+
+[node name="Marker2D" type="Marker2D" parent="Spawner"]
+position = Vector2(51, 78)
+
+[node name="Timer" type="Timer" parent="Spawner"]
+wait_time = 3.0
+autostart = true
+
+[connection signal="body_entered" from="TongueOrigin/Consume" to="TongueOrigin/Consume" method="_on_body_entered"]
+[connection signal="timeout" from="Spawner/Timer" to="Spawner" method="_on_timer_timeout"]
