@@ -1,6 +1,7 @@
 extends Sprite2D
 @onready var ray_cast = $RayCast2D
-var distance : float = 160.0
+var distance : float = 190.0
+@onready var can_shoot : bool = true
 
 signal caught(caught_position, collider)
 
@@ -12,10 +13,13 @@ func interpolate(length : float, duration : float = 0.2):
 	tween_rect_h.tween_property(self, "region_rect", Rect2(0,0,2, length), duration)
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("shoot"):
+	if event.is_action_pressed("shoot") && can_shoot == true:
 		interpolate(await check_collision(), 1.0)
 		await get_tree().create_timer(0.5).timeout
+		can_shoot = false
 		reverse_interpolate()
+		await get_tree().create_timer(0.75).timeout
+		can_shoot = true
 
 func reverse_interpolate():
 	interpolate(0,0.75)
@@ -29,10 +33,10 @@ func check_collision():
 		distance = (global_position - collision_point).length()
 		caught.emit(collision_point, collider)
 	else:
-		distance = 160.0
+		distance = 190.0
 	return distance
 
 
-func _on_caught(caught_position: Vector2, collider : CharacterBody2D) -> void:
+func _on_caught(_caught_position: Vector2, collider : CharacterBody2D) -> void:
 	if collider.has_method("got_caught"):
 		collider.got_caught()

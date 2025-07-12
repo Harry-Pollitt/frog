@@ -2,29 +2,38 @@ extends CharacterBody2D
 
 @onready var mouth : Vector2 = get_node("../TongueOrigin").global_position
 var caught_speed : float = 180.0
-var is_caught : bool = false
-var tween := create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN_OUT)
-
+@onready var is_caught : bool = false
+@onready var can_move : bool = true
 # movement
-var move_speed : float = 10
+var move_speed : int = randi_range(50,110)
 var move_direction : Vector2
-var wander_time : float
+var target_position: Vector2
+
+func _ready() -> void:
+	pick_new_target()
 
 func got_caught():
 	print("Got Caught")
 	is_caught = true
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
+	if can_move == true:
+		global_position = global_position.move_toward(target_position, move_speed * delta)
+		if global_position.distance_to(target_position) < 5.0:
+			target_position = pick_new_target()
+			await get_tree().create_timer(0.3).timeout
+			#pick_new_target()
 	if is_caught == true:
+		can_move = false
 		await get_tree().create_timer(0.5).timeout
-		#tween.tween_property(self, "global_position", mouth, 1)
 		global_position = global_position.move_toward(mouth, caught_speed * delta)
-	else:
-		pass
-		#random_movement()
+	
 
 func consumed():
 	queue_free()
 
-func random_movement():
-	tween.tween_property(self, "global_position", Vector2(randf_range(-50, 350), randf_range(-45, 145)), 3)
+func pick_new_target():
+	target_position = Vector2(randi_range(-50, 350), randi_range(-45, 145))
+	can_move = true
+	return target_position
+	

@@ -13,3 +13,4 @@ func _on_timer_timeout() -> void:
 	var fly = fly_scene.instantiate()
 	fly.position = spawn.position
 	get_parent().add_child(fly)
+	

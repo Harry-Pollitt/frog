@@ -36,22 +36,23 @@ animations = [{
 }],
 "loop": true,
 "name": &"fly",
-"speed": 5.0
+"speed": 3.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_iwav8"]
-radius = 9.0
 
 [node name="Enemy" type="CharacterBody2D"]
+motion_mode = 1
 script = ExtResource("1_55jtl")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_1vja8")
 animation = &"fly"
-frame_progress = 0.78287
+autoplay = "fly"
+frame_progress = 0.192807
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 light_mask = 2
-position = Vector2(2, -1)
+position = Vector2(2, -3)
 shape = SubResource("CircleShape2D_iwav8")
