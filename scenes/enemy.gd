@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 @onready var mouth : Vector2 = get_node("../TongueOrigin").global_position
-var caught_speed : float = 180.0
+var caught_speed : float = 300.0
 @onready var is_caught : bool = false
 @onready var can_move : bool = true
 # movement
@@ -13,7 +13,6 @@ func _ready() -> void:
 	pick_new_target()
 
 func got_caught():
-	print("Got Caught")
 	is_caught = true
 
 func _physics_process(delta: float) -> void:
@@ -25,7 +24,7 @@ func _physics_process(delta: float) -> void:
 			#pick_new_target()
 	if is_caught == true:
 		can_move = false
-		await get_tree().create_timer(0.5).timeout
+		await get_tree().create_timer(0.35).timeout
 		global_position = global_position.move_toward(mouth, caught_speed * delta)
 	
 

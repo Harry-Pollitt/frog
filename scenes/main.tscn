@@ -1,10 +1,13 @@
-[gd_scene load_steps=12 format=3 uid="uid://bhm036y48wb0r"]
+[gd_scene load_steps=17 format=3 uid="uid://bhm036y48wb0r"]
 
 [ext_resource type="Texture2D" uid="uid://dc7firvjc1fi5" path="res://assets/froggy-green.png" id="1_0xm2m"]
 [ext_resource type="Script" uid="uid://3g6ruh7ysnqg" path="res://scenes/tongue_origin.gd" id="1_jyhfs"]
+[ext_resource type="Texture2D" uid="uid://ftib1yrmuxpe" path="res://assets/background.png" id="1_o6xl0"]
 [ext_resource type="PackedScene" uid="uid://cjlfp7qvelqm7" path="res://scenes/tongue_body.tscn" id="2_sugp2"]
 [ext_resource type="Script" uid="uid://drfpd6m0snt6n" path="res://scenes/consume.gd" id="3_tbgi4"]
 [ext_resource type="Script" uid="uid://bpr58yirrkkod" path="res://scenes/spawner.gd" id="5_tbgi4"]
+[ext_resource type="Script" uid="uid://dy1va4e5m4eae" path="res://scenes/hunger_bar.gd" id="6_tefeu"]
+[ext_resource type="Script" uid="uid://rj2rfj1tbd8a" path="res://scenes/ui.gd" id="7_tipki"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jyhfs"]
 radius = 9.0
@@ -45,13 +48,25 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o6xl0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tipki"]
+
 [node name="Main" type="Node2D"]
+
+[node name="Background" type="TextureRect" parent="."]
+offset_left = -1.0
+offset_top = -4.0
+offset_right = 336.0
+offset_bottom = 204.0
+texture = ExtResource("1_o6xl0")
 
 [node name="TongueOrigin" type="Node2D" parent="."]
 position = Vector2(170, 166)
 script = ExtResource("1_jyhfs")
 
 [node name="TongueBody" parent="TongueOrigin" instance=ExtResource("2_sugp2")]
+position = Vector2(0, 5)
 
 [node name="Consume" type="Area2D" parent="TongueOrigin"]
 script = ExtResource("3_tbgi4")
@@ -61,43 +76,76 @@ position = Vector2(0, 5)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_jyhfs")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(170, 164)
-scale = Vector2(2, 2)
+[node name="FrogSprite" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(170, 157)
+scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_5vw27")
 animation = &"idle"
-frame_progress = 0.750037
+autoplay = "idle"
+frame_progress = 0.489672
 
 [node name="Spawner" type="Node2D" parent="."]
 script = ExtResource("5_tbgi4")
 
 [node name="Marker2D" type="Marker2D" parent="Spawner"]
-position = Vector2(-24, 52)
-
-[node name="Marker2D2" type="Marker2D" parent="Spawner"]
-position = Vector2(-21, -23)
+position = Vector2(-26, -33)
 
 [node name="Marker2D3" type="Marker2D" parent="Spawner"]
 position = Vector2(-22, 115)
 
-[node name="Marker2D4" type="Marker2D" parent="Spawner"]
-position = Vector2(105, -35)
-
 [node name="Marker2D5" type="Marker2D" parent="Spawner"]
-position = Vector2(219, -32)
-
-[node name="Marker2D6" type="Marker2D" parent="Spawner"]
-position = Vector2(328, -20)
+position = Vector2(336, -27)
 
 [node name="Marker2D7" type="Marker2D" parent="Spawner"]
-position = Vector2(358, 75)
-
-[node name="Marker2D8" type="Marker2D" parent="Spawner"]
-position = Vector2(358, 127)
+position = Vector2(365, 102)
 
 [node name="Timer" type="Timer" parent="Spawner"]
-wait_time = 0.75
+wait_time = 2.0
 autostart = true
 
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -14.0
+offset_top = 11.0
+offset_right = 26.0
+offset_bottom = 51.0
+script = ExtResource("7_tipki")
+
+[node name="HungerBar" type="ProgressBar" parent="UI"]
+unique_name_in_owner = true
+modulate = Color(0.352941, 0.709804, 0.435294, 1)
+layout_mode = 0
+offset_left = 308.0
+offset_top = 151.0
+offset_right = 456.0
+offset_bottom = 163.0
+rotation = -1.5708
+theme_override_styles/background = SubResource("StyleBoxEmpty_o6xl0")
+theme_override_styles/fill = SubResource("StyleBoxFlat_tipki")
+step = 1.0
+value = 100.0
+show_percentage = false
+script = ExtResource("6_tefeu")
+
+[node name="Timer" type="Timer" parent="UI/HungerBar"]
+autostart = true
+
+[node name="GameOver" type="Label" parent="UI"]
+visible = false
+layout_mode = 0
+offset_left = 24.0
+offset_top = -36.0
+offset_right = 337.0
+offset_bottom = 150.0
+text = "Game Over!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [connection signal="body_entered" from="TongueOrigin/Consume" to="TongueOrigin/Consume" method="_on_body_entered"]
+[connection signal="total_flys_consumed" from="TongueOrigin/Consume" to="UI/GameOver" method="_on_consume_total_flys_consumed"]
 [connection signal="timeout" from="Spawner/Timer" to="Spawner" method="_on_timer_timeout"]
+[connection signal="hunger_depleted" from="UI/HungerBar" to="TongueOrigin/Consume" method="_on_hunger_bar_hunger_depleted"]
+[connection signal="hunger_depleted" from="UI/HungerBar" to="UI/GameOver" method="_on_hunger_bar_hunger_depleted"]
+[connection signal="timeout" from="UI/HungerBar/Timer" to="UI/HungerBar" method="_on_timer_timeout"]
