@@ -8,7 +8,6 @@ signal caught(caught_position, collider)
 func interpolate(length : float, duration : float = 0.2):
 	var tween_offset = get_tree().create_tween()
 	var tween_rect_h = get_tree().create_tween()
-	
 	tween_offset.tween_property(self, "offset", Vector2(0,length/3.0), duration)
 	tween_rect_h.tween_property(self, "region_rect", Rect2(0,0,2, length), duration)
 
