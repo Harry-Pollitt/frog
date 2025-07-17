@@ -3,6 +3,7 @@
 [ext_resource type="AudioStream" uid="uid://bchb4av0jdrp1" path="res://assets/audio/Whimsical.mp3" id="1_3h6ak"]
 
 [node name="Music" type="AudioStreamPlayer"]
+process_mode = 3
 stream = ExtResource("1_3h6ak")
 autoplay = true
 bus = &"Music"

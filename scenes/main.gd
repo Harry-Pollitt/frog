@@ -16,8 +16,15 @@ func _on_consume_twist() -> void:
 	$UI/GameOver.visible = true
 	$UI/GameOver.text = "You grew too big\n and were noticed..."
 	$UI/QuitButton.visible = true
+	$UI/Restart.visible = true
 	$UI/MessagesToPlayer.visible = false
 
 
 func _on_quit_button_pressed() -> void:
 	get_tree().quit()
+
+
+func _on_restart_pressed() -> void:
+	get_tree().paused = false
+	get_tree().reload_current_scene()
+	

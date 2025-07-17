@@ -200,6 +200,25 @@ offset_right = 59.0
 offset_bottom = 14.0
 text = "Quit"
 
+[node name="Restart" type="Button" parent="UI"]
+process_mode = 3
+visible = false
+layout_mode = 0
+offset_left = 154.0
+offset_top = 81.0
+offset_right = 210.0
+offset_bottom = 105.0
+icon = ExtResource("5_trceg")
+flat = true
+
+[node name="Label" type="Label" parent="UI/Restart"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 3.0
+offset_right = 54.0
+offset_bottom = 14.0
+text = "Restart"
+
 [node name="TongueOrigin" type="Node2D" parent="."]
 position = Vector2(170, 166)
 script = ExtResource("1_jyhfs")
@@ -295,6 +314,7 @@ volume_db = 24.0
 [connection signal="hunger_depleted" from="UI/HungerBar" to="TongueOrigin/Consume" method="_on_hunger_bar_hunger_depleted"]
 [connection signal="timeout" from="UI/HungerBar/Timer" to="UI/HungerBar" method="_on_timer_timeout"]
 [connection signal="pressed" from="UI/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="UI/Restart" to="." method="_on_restart_pressed"]
 [connection signal="body_entered" from="TongueOrigin/Consume" to="TongueOrigin/Consume" method="_on_body_entered"]
 [connection signal="total_flys_consumed" from="TongueOrigin/Consume" to="UI" method="_on_consume_total_flys_consumed"]
 [connection signal="twist" from="TongueOrigin/Consume" to="." method="_on_consume_twist"]
