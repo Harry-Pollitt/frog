@@ -1,0 +1,58 @@
+[gd_scene load_steps=9 format=3 uid="uid://cok7e67aiqqp"]
+
+[ext_resource type="Texture2D" uid="uid://bg45pwu68npue" path="res://assets/sprites/bees and butterfly .png" id="1_3gvst"]
+[ext_resource type="Script" uid="uid://bd8r0cjof7mi6" path="res://scenes/enemies/enemy.gd" id="1_55jtl"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_55jtl"]
+atlas = ExtResource("1_3gvst")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mpr68"]
+atlas = ExtResource("1_3gvst")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ft8do"]
+atlas = ExtResource("1_3gvst")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5wwv6"]
+atlas = ExtResource("1_3gvst")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1vja8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_55jtl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mpr68")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ft8do")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5wwv6")
+}],
+"loop": true,
+"name": &"fly",
+"speed": 3.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_iwav8"]
+
+[node name="Enemy" type="CharacterBody2D"]
+motion_mode = 1
+script = ExtResource("1_55jtl")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_1vja8")
+animation = &"fly"
+autoplay = "fly"
+frame_progress = 0.192807
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+light_mask = 2
+position = Vector2(2, -3)
+shape = SubResource("CircleShape2D_iwav8")

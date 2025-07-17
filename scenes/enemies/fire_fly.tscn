@@ -1,0 +1,65 @@
+[gd_scene load_steps=9 format=3 uid="uid://bq4ha4y4wonrj"]
+
+[ext_resource type="Texture2D" uid="uid://bg45pwu68npue" path="res://assets/sprites/bees and butterfly .png" id="1_of8qj"]
+[ext_resource type="Script" uid="uid://ct8pj5eacgxnn" path="res://scenes/enemies/fire_fly.gd" id="1_xsqqw"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xsqqw"]
+atlas = ExtResource("1_of8qj")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_53vrg"]
+atlas = ExtResource("1_of8qj")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j0lfq"]
+atlas = ExtResource("1_of8qj")
+region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0askn"]
+atlas = ExtResource("1_of8qj")
+region = Rect2(48, 16, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_e2udn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xsqqw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_53vrg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j0lfq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0askn")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_w1gwo"]
+radius = 8.0
+
+[node name="FireFly" type="CharacterBody2D"]
+script = ExtResource("1_xsqqw")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_e2udn")
+autoplay = "default"
+frame = 3
+frame_progress = 0.111016
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2, 0)
+shape = SubResource("CircleShape2D_w1gwo")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+amount = 6
+lifetime = 0.51
+emission_shape = 1
+emission_sphere_radius = 11.34
+gravity = Vector2(0, 0)
+color = Color(0.556863, 0.737255, 0.415686, 1)

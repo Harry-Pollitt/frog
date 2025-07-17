@@ -12,7 +12,7 @@ func interpolate(length : float, duration : float = 0.2):
 	tween_rect_h.tween_property(self, "region_rect", Rect2(0,0,2, length), duration)
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("shoot"):
+	if event.is_action_pressed("shoot") && can_shoot == true:
 		set_process_input(false)
 		ray_cast.enabled = true
 		interpolate(await check_collision(), 0.5)
@@ -21,7 +21,8 @@ func _input(event: InputEvent) -> void:
 		await get_tree().create_timer(0.5).timeout
 		ray_cast.enabled = false
 		set_process_input(true)
-		
+	elif event.is_action_pressed("shoot") && can_shoot == false:
+		return
 
 func reverse_interpolate():
 	interpolate(0,0.5)
@@ -42,3 +43,7 @@ func check_collision():
 func _on_caught(_caught_position: Vector2, collider : CharacterBody2D) -> void:
 	if collider.has_method("got_caught"):
 		collider.got_caught()
+
+
+func _on_consume_twist() -> void:
+	can_shoot = false

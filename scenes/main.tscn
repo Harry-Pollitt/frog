@@ -1,13 +1,18 @@
-[gd_scene load_steps=17 format=3 uid="uid://bhm036y48wb0r"]
+[gd_scene load_steps=29 format=3 uid="uid://bhm036y48wb0r"]
 
-[ext_resource type="Texture2D" uid="uid://dc7firvjc1fi5" path="res://assets/froggy-green.png" id="1_0xm2m"]
+[ext_resource type="Texture2D" uid="uid://dc7firvjc1fi5" path="res://assets/sprites/froggy-green.png" id="1_0xm2m"]
 [ext_resource type="Script" uid="uid://3g6ruh7ysnqg" path="res://scenes/tongue_origin.gd" id="1_jyhfs"]
-[ext_resource type="Texture2D" uid="uid://ftib1yrmuxpe" path="res://assets/background.png" id="1_o6xl0"]
+[ext_resource type="Texture2D" uid="uid://ftib1yrmuxpe" path="res://assets/background/background.png" id="1_o6xl0"]
+[ext_resource type="Script" uid="uid://du0lbnxooqwpm" path="res://scenes/main.gd" id="1_ya4ey"]
 [ext_resource type="PackedScene" uid="uid://cjlfp7qvelqm7" path="res://scenes/tongue_body.tscn" id="2_sugp2"]
 [ext_resource type="Script" uid="uid://drfpd6m0snt6n" path="res://scenes/consume.gd" id="3_tbgi4"]
 [ext_resource type="Script" uid="uid://bpr58yirrkkod" path="res://scenes/spawner.gd" id="5_tbgi4"]
+[ext_resource type="Texture2D" uid="uid://daii8k31uu5p6" path="res://resources/button_texture.atlastex" id="5_trceg"]
 [ext_resource type="Script" uid="uid://dy1va4e5m4eae" path="res://scenes/hunger_bar.gd" id="6_tefeu"]
+[ext_resource type="AudioStream" uid="uid://bayd4sn71pl7" path="res://assets/audio/Boost.wav" id="7_85g3d"]
 [ext_resource type="Script" uid="uid://rj2rfj1tbd8a" path="res://scenes/ui.gd" id="7_tipki"]
+[ext_resource type="Texture2D" uid="uid://cq87feh8dammo" path="res://assets/sprites/Crow.png" id="10_choun"]
+[ext_resource type="AudioStream" uid="uid://rmhkr3026sec" path="res://assets/audio/crow_caw.wav" id="12_eb6dy"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o6xl0"]
 
@@ -15,6 +20,12 @@
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jyhfs"]
 radius = 9.0
+
+[sub_resource type="Curve2D" id="Curve2D_ya4ey"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 1.408, 13.568, 0, 0, 0, 0, 47.872, -10.752, 0, 0, 0, 0, 101.248, -17.024)
+}
+point_count = 3
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1bvp3"]
 atlas = ExtResource("1_0xm2m")
@@ -52,13 +63,56 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="Curve2D" id="Curve2D_eb6dy"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -44.032, -26.752, 0, 0, 0, 0, 0.383999, 6.016, 0, 0, 0, 0, 46.208, -24.832, 0, 0, 0, 0, 100.864, -30.464)
+}
+point_count = 4
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_trceg"]
+atlas = ExtResource("10_choun")
+region = Rect2(0, 96, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a8y0u"]
+atlas = ExtResource("10_choun")
+region = Rect2(48, 96, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jkv2x"]
+atlas = ExtResource("10_choun")
+region = Rect2(96, 96, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jbj1t"]
+atlas = ExtResource("10_choun")
+region = Rect2(144, 96, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_muem4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_trceg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a8y0u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jkv2x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jbj1t")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
 [node name="Main" type="Node2D"]
+script = ExtResource("1_ya4ey")
 
 [node name="Background" type="TextureRect" parent="."]
-offset_left = -21.0
-offset_top = -24.0
-offset_right = 357.0
-offset_bottom = 221.0
+offset_left = -22.0
+offset_top = -37.0
+offset_right = 356.0
+offset_bottom = 208.0
 texture = ExtResource("1_o6xl0")
 
 [node name="UI" type="Control" parent="."]
@@ -72,12 +126,13 @@ script = ExtResource("7_tipki")
 
 [node name="HungerBar" type="ProgressBar" parent="UI"]
 unique_name_in_owner = true
+process_mode = 1
 modulate = Color(0.352941, 0.709804, 0.435294, 1)
 layout_mode = 0
-offset_left = 330.0
-offset_top = 141.0
-offset_right = 478.0
-offset_bottom = 153.0
+offset_left = 315.0
+offset_top = 142.0
+offset_right = 463.0
+offset_bottom = 154.0
 rotation = -1.5708
 theme_override_styles/background = SubResource("StyleBoxEmpty_o6xl0")
 theme_override_styles/fill = SubResource("StyleBoxFlat_tipki")
@@ -100,30 +155,57 @@ text = "Game Over!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Score" type="Label" parent="UI"]
+[node name="MessagesToPlayer" type="Control" parent="UI"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Score" type="Label" parent="UI/MessagesToPlayer"]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 331.0
-offset_top = 140.0
-offset_right = 371.0
-offset_bottom = 163.0
+offset_left = 319.0
+offset_top = 141.0
+offset_right = 359.0
+offset_bottom = 164.0
 text = "0"
 
-[node name="Messages" type="Label" parent="UI"]
+[node name="Messages" type="Label" parent="UI/MessagesToPlayer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 0
-offset_left = 128.0
-offset_top = 39.0
-offset_right = 168.0
-offset_bottom = 62.0
+offset_left = 156.0
+offset_top = 43.0
+offset_right = 196.0
+offset_bottom = 66.0
+text = "frog"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="QuitButton" type="Button" parent="UI"]
+process_mode = 3
+visible = false
+layout_mode = 0
+offset_left = 154.0
+offset_top = 102.0
+offset_right = 210.0
+offset_bottom = 126.0
+icon = ExtResource("5_trceg")
+flat = true
+
+[node name="Label" type="Label" parent="UI/QuitButton"]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 3.0
+offset_right = 59.0
+offset_bottom = 14.0
+text = "Quit"
 
 [node name="TongueOrigin" type="Node2D" parent="."]
 position = Vector2(170, 166)
 script = ExtResource("1_jyhfs")
 
 [node name="TongueBody" parent="TongueOrigin" instance=ExtResource("2_sugp2")]
+unique_name_in_owner = true
 position = Vector2(0, 5)
 
 [node name="Consume" type="Area2D" parent="TongueOrigin"]
@@ -134,10 +216,30 @@ position = Vector2(0, 5)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_jyhfs")
 
-[node name="FrogSprite" type="AnimatedSprite2D" parent="."]
+[node name="Eat" type="AudioStreamPlayer" parent="TongueOrigin/Consume"]
+stream = ExtResource("7_85g3d")
+pitch_scale = 1.04
+bus = &"Effects"
+
+[node name="TwistPath" type="Path2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(170, 157)
-scale = Vector2(3, 3)
+process_mode = 3
+position = Vector2(156, 49)
+scale = Vector2(7.8125, 7.8125)
+curve = SubResource("Curve2D_ya4ey")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="TwistPath"]
+position = Vector2(1.408, 13.568)
+rotation = -0.482204
+rotates = false
+loop = false
+
+[node name="FrogSprite" type="AnimatedSprite2D" parent="TwistPath/PathFollow2D"]
+unique_name_in_owner = true
+process_mode = 1
+position = Vector2(0.507671, 0.410191)
+rotation = 0.482204
+scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_5vw27")
 animation = &"idle"
 autoplay = "idle"
@@ -158,12 +260,44 @@ position = Vector2(336, -27)
 [node name="Marker2D7" type="Marker2D" parent="Spawner"]
 position = Vector2(365, 102)
 
-[node name="Timer" type="Timer" parent="Spawner"]
+[node name="FlyTimer" type="Timer" parent="Spawner"]
 wait_time = 1.5
 autostart = true
 
+[node name="FireFlyTimer" type="Timer" parent="Spawner"]
+wait_time = 5.0
+autostart = true
+
+[node name="CrowPath" type="Path2D" parent="."]
+unique_name_in_owner = true
+process_mode = 3
+position = Vector2(156, 49)
+scale = Vector2(7.8125, 7.8125)
+curve = SubResource("Curve2D_eb6dy")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="CrowPath"]
+position = Vector2(-44.032, -26.752)
+rotation = 0.635616
+rotates = false
+loop = false
+
+[node name="Crow" type="AnimatedSprite2D" parent="CrowPath/PathFollow2D"]
+position = Vector2(-0.0759811, -0.103009)
+rotation = -0.39619
+sprite_frames = SubResource("SpriteFrames_muem4")
+autoplay = "default"
+frame_progress = 0.296071
+
+[node name="CrowCall" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_eb6dy")
+volume_db = 24.0
+
 [connection signal="hunger_depleted" from="UI/HungerBar" to="TongueOrigin/Consume" method="_on_hunger_bar_hunger_depleted"]
 [connection signal="timeout" from="UI/HungerBar/Timer" to="UI/HungerBar" method="_on_timer_timeout"]
+[connection signal="pressed" from="UI/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="body_entered" from="TongueOrigin/Consume" to="TongueOrigin/Consume" method="_on_body_entered"]
 [connection signal="total_flys_consumed" from="TongueOrigin/Consume" to="UI" method="_on_consume_total_flys_consumed"]
-[connection signal="timeout" from="Spawner/Timer" to="Spawner" method="_on_timer_timeout"]
+[connection signal="twist" from="TongueOrigin/Consume" to="." method="_on_consume_twist"]
+[connection signal="twist" from="TongueOrigin/Consume" to="TongueOrigin/TongueBody" method="_on_consume_twist"]
+[connection signal="timeout" from="Spawner/FlyTimer" to="Spawner" method="_on_timer_timeout"]
+[connection signal="timeout" from="Spawner/FireFlyTimer" to="Spawner" method="_on_fire_fly_timer_timeout"]

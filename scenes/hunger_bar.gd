@@ -10,14 +10,13 @@ func _on_timer_timeout() -> void:
 	if hunger_counter in range(0,30):
 		self.value -= 3
 	elif hunger_counter in range(30,60):
-		self.value -= 5
-	elif hunger_counter > 60:
 		self.value -= 7
+	elif hunger_counter > 60:
+		self.value -= 10
 	if self.value == 0:
 		hunger_depleted.emit()
-		print("hunger_depleted signal")
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if hunger_counter == 30:
 		messages.visible = true
 		messages.text = "I'm getting \nhungier!"

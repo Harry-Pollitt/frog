@@ -1,6 +1,7 @@
 extends Node2D
 
-var fly_scene := preload("res://scenes/Enemy.tscn")
+var fly_scene := preload("res://scenes/enemies/Enemy.tscn")
+var firefly_scene := preload("res://scenes/enemies/fire_fly.tscn")
 var spawn_points : Array = []
 
 func _ready() -> void:
@@ -14,3 +15,10 @@ func _on_timer_timeout() -> void:
 	fly.position = spawn.position
 	get_parent().add_child(fly)
 	
+
+
+func _on_fire_fly_timer_timeout() -> void:
+	var spawn = spawn_points[randi() % spawn_points.size()]
+	var fire_fly = firefly_scene.instantiate()
+	fire_fly.position = spawn.position
+	get_parent().add_child(fire_fly)

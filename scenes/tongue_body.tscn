@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cjlfp7qvelqm7"]
 
-[ext_resource type="Texture2D" uid="uid://djhmkg61emgqv" path="res://assets/tongue-tail.png" id="1_i5m0w"]
+[ext_resource type="Texture2D" uid="uid://djhmkg61emgqv" path="res://assets/sprites/tongue-tail.png" id="1_i5m0w"]
 [ext_resource type="Script" uid="uid://c573n7fsqyvjx" path="res://scenes/tongue_body.gd" id="2_vkwpt"]
 
 [node name="TongueBody" type="Sprite2D"]
@@ -15,7 +15,7 @@ script = ExtResource("2_vkwpt")
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 enabled = false
-target_position = Vector2(0, 75)
+target_position = Vector2(0, 90)
 hit_from_inside = true
 
 [connection signal="caught" from="." to="." method="_on_caught"]

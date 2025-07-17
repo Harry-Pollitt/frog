@@ -11,13 +11,24 @@ config_version=5
 [application]
 
 config/name="Frog"
-run/main_scene="uid://bhm036y48wb0r"
+run/main_scene="uid://c16mni53objyt"
 config/features=PackedStringArray("4.4", "Mobile")
+boot_splash/image="res://assets/splash.png"
+boot_splash/minimum_display_time=2000
+
+[audio]
+
+buses/default_bus_layout="res://resources/default_bus_layout.tres"
+
+[autoload]
+
+Music="*res://scenes/music.tscn"
 
 [display]
 
 window/size/viewport_width=320
 window/size/viewport_height=180
+window/size/mode=2
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 window/stretch/scale_mode="integer"
@@ -25,6 +36,10 @@ window/stretch/scale_mode="integer"
 [editor]
 
 version_control/autoload_on_startup=true
+
+[gui]
+
+theme/custom_font="uid://pxy8bqd1d3nv"
 
 [input]
 
@@ -38,6 +53,5 @@ shoot={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-renderer/rendering_method="mobile"
 2d/snap/snap_2d_transforms_to_pixel=true
 2d/snap/snap_2d_vertices_to_pixel=true
