@@ -4,11 +4,16 @@ extends Area2D
 @onready var frog_sprite = %FrogSprite
 @onready var hunger = %HungerBar
 @onready var score_label = %Score
-@onready var tongue_sprite = %TongueBody
+
 var flys_consumed : int = 0
 var hunger_value : int
 signal total_flys_consumed(flys_consumed : int)
 signal twist
+# attached to hunger bar
+signal growth_phase1
+signal growth_phase2
+signal phase1_msg
+signal phase2_msg
 
 func _ready() -> void:
 	messages.visible = true
@@ -26,22 +31,24 @@ func _on_body_entered(body: Node2D) -> void:
 	
 func _process(_delta: float) -> void:
 	score_label.text = str(flys_consumed)
-	if flys_consumed in range(10, 29):
-		frog_sprite.scale = Vector2(1,1)
-		tongue_sprite.scale = Vector2(3,2)
-	elif flys_consumed > 30:
-		frog_sprite.scale = Vector2(2,2)
-		tongue_sprite.scale = Vector2(4,2)
+		
 	if flys_consumed == 10:
 		messages.visible = true
 		messages.text = "Keep on eating \nto get ready\n to spawn!"
 		await get_tree().create_timer(2).timeout
 		messages.visible = false
+		frog_sprite.scale = Vector2(1,1)
+		#tongue_sprite.scale = Vector2(3,2)
+		growth_phase1.emit()
+		
 	if flys_consumed == 30:
 		messages.visible = true
 		messages.text = "Almost \nthere!"
 		await get_tree().create_timer(2).timeout
 		messages.visible = false
+		frog_sprite.scale = Vector2(2,2)
+		#tongue_sprite.scale = Vector2(4,2)
+		growth_phase2.emit()
 	if flys_consumed == 40:
 		twist.emit()
 		self.set_process(false)

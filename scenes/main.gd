@@ -3,8 +3,10 @@ extends Node2D
 @onready var twist_path = $CrowPath/PathFollow2D
 @onready var frog_path = $TwistPath/PathFollow2D
 @onready var crow_call = $CrowCall
+@onready var hunger_bar = $UI/HungerBar/Timer
 
 func _on_consume_twist() -> void:
+	hunger_bar.one_shot = true
 	crow_call.play()
 	var crow_tween = get_tree().create_tween()
 	var frog_tween = get_tree().create_tween()

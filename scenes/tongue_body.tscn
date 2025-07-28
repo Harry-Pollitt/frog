@@ -1,9 +1,25 @@
-[gd_scene load_steps=3 format=3 uid="uid://cjlfp7qvelqm7"]
+[gd_scene load_steps=5 format=3 uid="uid://cjlfp7qvelqm7"]
 
 [ext_resource type="Texture2D" uid="uid://djhmkg61emgqv" path="res://assets/sprites/tongue-tail.png" id="1_i5m0w"]
 [ext_resource type="Script" uid="uid://c573n7fsqyvjx" path="res://scenes/tongue_body.gd" id="2_vkwpt"]
+[ext_resource type="AudioStream" uid="uid://ctdqh6netp5oj" path="res://assets/audio/4.wav" id="3_vkwpt"]
 
-[node name="TongueBody" type="Sprite2D"]
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_i5m0w"]
+b = Vector2(2.49999, 4.00001)
+
+[node name="Tongue" type="Node2D"]
+process_mode = 3
+script = ExtResource("2_vkwpt")
+
+[node name="TongueCollision" type="Area2D" parent="."]
+rotation = -1.5708
+scale = Vector2(2, 2)
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TongueCollision"]
+shape = SubResource("SegmentShape2D_i5m0w")
+
+[node name="TongueBody" type="Sprite2D" parent="."]
 texture_filter = 1
 texture_repeat = 2
 rotation = -1.5708
@@ -11,11 +27,16 @@ scale = Vector2(2, 2)
 texture = ExtResource("1_i5m0w")
 region_enabled = true
 region_rect = Rect2(7, 7, 2, 2)
-script = ExtResource("2_vkwpt")
 
-[node name="RayCast2D" type="RayCast2D" parent="."]
+[node name="RayCast2D" type="RayCast2D" parent="TongueBody"]
+visible = false
 enabled = false
 target_position = Vector2(0, 90)
 hit_from_inside = true
 
+[node name="Eating" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_vkwpt")
+bus = &"Effects"
+
 [connection signal="caught" from="." to="." method="_on_caught"]
+[connection signal="body_entered" from="TongueCollision" to="." method="_on_tongue_collision_body_entered"]
